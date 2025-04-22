@@ -13,8 +13,12 @@ type config struct {
 
 func main() {
 	pokeClient := pokeapi.NewClient(5 * time.Second)
+	firstLocationURL := "https://pokeapi.co/api/v2/location-area"
+	prevLocationURL := "https://pokeapi.co/api/v2/location-area"
 	cfg := &config{
-		pokeapiClient: pokeClient,
+		pokeapiClient:    pokeClient,
+		nextLocationsURL: &firstLocationURL,
+		prevLocationsURL: &prevLocationURL,
 	}
 	startRepl(cfg)
 }

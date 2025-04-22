@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/luckyhut/pokedexcli/internal/pokecache"
 	"os"
 	"strings"
+	"time"
 )
 
 var commands = map[string]cliCommand{}
@@ -12,11 +14,12 @@ var commands = map[string]cliCommand{}
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, *pokecache.Cache) error
 }
 
 func startRepl(cfg *config) {
 	initCommands()
+	cache := pokecache.NewCache(5 * time.Second)
 	s := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -30,7 +33,7 @@ func startRepl(cfg *config) {
 			fmt.Println("Unknown command")
 			continue
 		}
-		c.callback(cfg)
+		c.callback(cfg, &cache)
 	}
 }
 

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/luckyhut/pokedexcli/internal/pokecache"
 )
 
-func commandHelp(c *config) error {
+func commandHelp(c *config, cache *pokecache.Cache) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
 
