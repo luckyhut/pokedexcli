@@ -29,6 +29,9 @@ func startRepl(cfg *config) {
 		location := ""
 
 		// check command
+		if len(words) == 0 {
+			continue
+		}
 		c := commands[words[0]]
 		if c.callback == nil {
 			fmt.Println("Unknown command")
