@@ -3,12 +3,13 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/luckyhut/pokedexcli/internal/pokecache"
 	"io"
 	"net/http"
 )
 
-func (c *Client) Explore(pageURL string) (LocationArea, error) {
-	req, err := http.NewRequest("GET", pageURL, nil)
+func (c *Client) Explore(pageURL *string, cache *pokecache.Cache) (LocationArea, error) {
+	req, err := http.NewRequest("GET", *pageURL, nil)
 	if err != nil {
 		return LocationArea{}, err
 	}
@@ -22,6 +23,8 @@ func (c *Client) Explore(pageURL string) (LocationArea, error) {
 	if err != nil {
 		return LocationArea{}, err
 	}
+
+	cache.Add(*pageURL, data)
 
 	encountersResp, err := UnmarshalPokemonEncounter(data)
 	if err != nil {

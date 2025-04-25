@@ -8,7 +8,19 @@ import (
 
 func commandExplore(c *config, cache *pokecache.Cache, location *string) error {
 	fullURL := pokeapi.BaseURL + "location-area/" + *location
-	encounters, err := c.pokeapiClient.Explore(fullURL)
+	cached, found := cache.Get(fullURL)
+	// it's in the cache
+	if found {
+		fmt.Println("Cache hit")
+		encounters, err := pokeapi.UnmarshalPokemonEncounter(cached)
+		if err != nil {
+			return err
+		}
+		printEncounters(encounters)
+	}
+
+	// it's not in the cache
+	encounters, err := c.pokeapiClient.Explore(&fullURL, cache)
 	if err != nil {
 		return err
 	}
