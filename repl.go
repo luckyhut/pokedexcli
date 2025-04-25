@@ -14,7 +14,7 @@ var commands = map[string]cliCommand{}
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, *pokecache.Cache) error
+	callback    func(*config, *pokecache.Cache, *string) error
 }
 
 func startRepl(cfg *config) {
@@ -26,6 +26,7 @@ func startRepl(cfg *config) {
 		s.Scan()
 		input := s.Text()
 		words := strings.Fields(input)
+		location := ""
 
 		// check command
 		c := commands[words[0]]
@@ -33,7 +34,12 @@ func startRepl(cfg *config) {
 			fmt.Println("Unknown command")
 			continue
 		}
-		c.callback(cfg, &cache)
+		if words[0] == "explore" {
+			location = words[1]
+			c.callback(cfg, &cache, &location)
+			continue
+		}
+		c.callback(cfg, &cache, &location)
 	}
 }
 
@@ -57,6 +63,11 @@ func initCommands() {
 		name:        "mapb",
 		description: "Displays previous map locations",
 		callback:    commandMapb,
+	}
+	commands["explore"] = cliCommand{
+		name:        "explore",
+		description: "Shows available pokemon in a given area",
+		callback:    commandExplore,
 	}
 }
 

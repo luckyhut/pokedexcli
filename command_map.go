@@ -6,7 +6,7 @@ import (
 	"github.com/luckyhut/pokedexcli/internal/pokecache"
 )
 
-func commandMap(c *config, cache *pokecache.Cache) error {
+func commandMap(c *config, cache *pokecache.Cache, location *string) error {
 	cached, found := cache.Get(*c.nextLocationsURL)
 	// it's in the cache
 	if found {
@@ -29,7 +29,7 @@ func commandMap(c *config, cache *pokecache.Cache) error {
 	return nil
 }
 
-func commandMapb(c *config, cache *pokecache.Cache) error {
+func commandMapb(c *config, cache *pokecache.Cache, location *string) error {
 	cached, found := cache.Get(*c.prevLocationsURL)
 	// it's in the cache
 	if found {
