@@ -27,6 +27,7 @@ func startRepl(cfg *config) {
 		input := s.Text()
 		words := strings.Fields(input)
 		location := ""
+		pokemon := ""
 
 		// check command
 		if len(words) == 0 {
@@ -42,6 +43,18 @@ func startRepl(cfg *config) {
 			c.callback(cfg, &cache, &location)
 			continue
 		}
+		if words[0] == "catch" {
+			pokemon = words[1]
+			fmt.Printf("Throwing a Pokeball at %s...\n", pokemon)
+			c.callback(cfg, &cache, &pokemon)
+			continue
+		}
+		if words[0] == "inspect" {
+			pokemon = words[1]
+			c.callback(cfg, &cache, &pokemon)
+			continue
+		}
+
 		c.callback(cfg, &cache, &location)
 	}
 }
@@ -69,8 +82,18 @@ func initCommands() {
 	}
 	commands["explore"] = cliCommand{
 		name:        "explore",
-		description: "Shows available pokemon in a given area",
+		description: "Shows available Pokemon in a given area",
 		callback:    commandExplore,
+	}
+	commands["catch"] = cliCommand{
+		name:        "catch",
+		description: "Attempt to catch a Pokemon",
+		callback:    commandCatch,
+	}
+	commands["inspect"] = cliCommand{
+		name:        "inspect",
+		description: "View details for a captured Pokemon",
+		callback:    commandInspect,
 	}
 }
 
