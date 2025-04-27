@@ -95,6 +95,11 @@ func initCommands() {
 		description: "View details for a captured Pokemon",
 		callback:    commandInspect,
 	}
+	commands["pokedex"] = cliCommand{
+		name:        "pokedex",
+		description: "View a list of all captured Pokemon",
+		callback:    commandPokedex,
+	}
 }
 
 func cleanInput(text string) []string {
